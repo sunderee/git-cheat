@@ -53,6 +53,10 @@ func main() {
 			os.Exit(1)
 		}
 
+		if err := createCommit(*message, *date); err != nil {
+			fmt.Println("Error creating commit:", err)
+			os.Exit(1)
+		}
 		fmt.Printf("Creating commit with message: %s at %s\n", *message, *date)
 
 	case "redate":
@@ -79,6 +83,10 @@ func main() {
 			os.Exit(1)
 		}
 
+		if err := redateCommit(*commitHash, *date); err != nil {
+			fmt.Println("Error redating commit:", err)
+			os.Exit(1)
+		}
 		fmt.Printf("Updating commit %s with new date %s\n", *commitHash, *date)
 
 	case "reauthor":
@@ -97,6 +105,11 @@ func main() {
 		reauthorCmd.Parse(os.Args[2:])
 		if *commitHash == "" || *name == "" || *email == "" {
 			reauthorCmd.Usage()
+			os.Exit(1)
+		}
+
+		if err := reauthorCommit(*commitHash, *name, *email); err != nil {
+			fmt.Println("Error reauthoring commit:", err)
 			os.Exit(1)
 		}
 
